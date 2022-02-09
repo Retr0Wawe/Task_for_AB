@@ -2,19 +2,27 @@
 
 using namespace tinyxml2;
 
-class XMLtree //make like singlton!!!!
+class XMLtree 
 {
+private:
+	XMLtree() = default;
+	~XMLtree() = default;
 public:
-	XMLtree(const char* _filename);
+	XMLtree(const XMLtree&) = delete;
+	XMLtree(const XMLtree&&) = delete;
 
-	~XMLtree();
+	XMLtree& operator=(const XMLtree&) = delete;
+	XMLtree& operator=(const XMLtree&&) = delete;
 public:
+	bool Initialize(const char* _file_path) noexcept;
+
 	void AddElement() noexcept;
 
 	void DeleteElement() noexcept;
 
-	const XMLDocument& GetDocument() const noexcept { return doc; }
+	void PrintTree() const noexcept;
+
+	static XMLtree& GetInstance() noexcept { static XMLtree obj;  return obj; };
 protected:
 	XMLDocument doc;
-	bool IsInit;
 };

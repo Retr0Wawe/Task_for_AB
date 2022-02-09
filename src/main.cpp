@@ -1,8 +1,12 @@
 #include "Core/includes/XMLTree.hpp"
+
 #include <iostream>
 
-using namespace tinyxml2;
+//using namespace tinyxml2;
 
+
+
+/*
 int main()
 {
     XMLDocument doc;
@@ -10,7 +14,7 @@ int main()
     if (doc.LoadFile("demo.xml") == XML_SUCCESS)
     {
         std::cout << "Load Succesful!" << std::endl;
-    }
+    } 
 
     XMLElement* pRootElement = doc.RootElement(); //<file> root element
 
@@ -29,4 +33,16 @@ int main()
             }
         }
     }
+}
+*/
+
+int main()
+{
+    auto xml = &XMLtree::GetInstance();
+
+    if (!xml->Initialize("tst_2.xml")) {
+        std::cout << "File not found!" << std::endl;
+    }
+
+    xml->PrintTree();
 }
