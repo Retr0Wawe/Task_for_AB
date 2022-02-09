@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 project(xml_parser LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDART 11)
+set(CMAKE_CXX_STANDART 17)
 
 set(xml_includes
 	src/Core/includes/XMLTree.hpp

@@ -1,15 +1,20 @@
 #include <tinyxml2.h>
-#include <iostream>
-#include <vector>
 
-namespace XMLParser
+using namespace tinyxml2;
+
+class XMLtree //make like singlton!!!!
 {
-	class XMLTree
-	{
-	private:
-		std::vector<std::string> tree;
-	public:
-		XMLTree()
-		{	}
-	};
-}
+public:
+	XMLtree(const char* _filename);
+
+	~XMLtree();
+public:
+	void AddElement() noexcept;
+
+	void DeleteElement() noexcept;
+
+	const XMLDocument& GetDocument() const noexcept { return doc; }
+protected:
+	XMLDocument doc;
+	bool IsInit;
+};
