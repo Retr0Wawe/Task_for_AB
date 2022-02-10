@@ -12,7 +12,6 @@ set(xml_sources
 	src/Core/src/XMLTree.cpp
 )
 
-
 add_executable(${PROJECT_NAME}	
 	${xml_includes}
 	${xml_sources}
