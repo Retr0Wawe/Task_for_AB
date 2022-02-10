@@ -12,7 +12,7 @@ int main()
         std::exit(0);
     }
 
-    xml->AddElement("He");
+    //xml->AddElement('d');
 
     do {
         std::cout << "Select an action: " << std::endl << std::endl;
@@ -32,8 +32,5 @@ int main()
         default:
             std::cout << "Action not recognized!" << std::endl;
         }
-
     } while (ch != 'E');
-
-    
 }

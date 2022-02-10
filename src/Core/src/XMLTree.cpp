@@ -2,11 +2,16 @@
 
 #include <iostream>
 
-XMLtree::XMLtree()
+XMLtree::XMLtree(): file_path(nullptr)
 {
 	#if defined(_WIN32) || defined(_WIN64)
 		system("chcp 65001 && cls"); 
 	#endif
+}
+
+XMLtree::~XMLtree()
+{
+	//doc.SaveFile(file_path);
 }
 
 std::string XMLtree::GetStrFromChild(const XMLElement* _elem, const char* _child_name) const
@@ -18,16 +23,36 @@ std::string XMLtree::GetStrFromChild(const XMLElement* _elem, const char* _child
 
 bool XMLtree::Initialize(const char* _file_path)
 {
+	this->file_path = _file_path;
 	return doc.LoadFile(_file_path) != XML_SUCCESS ? false : true;
 }
 
-void XMLtree::AddElement(const char* _name) noexcept
+void XMLtree::AddElement(const char ch) noexcept
 {
 	auto pTop = doc.RootElement();
-	auto pElement = pTop->FirstChildElement("department");
+	
+	switch (ch) 
+	{
+		case 'd':
+			std::string str;
+			XMLElement * pNewDepartment = doc.NewElement("department");
 
-	auto pRoot = doc.NewElement("Test");
-	pElement->InsertEndChild(pRoot);
+			std::cout << "Enter department name:";
+			std::getline(std::cin, str);
+			
+			pNewDepartment->SetAttribute("name", str.c_str());
+			pTop->InsertEndChild(pNewDepartment);
+
+			XMLNode* pEmployments = doc.NewElement("employments");
+
+			pNewDepartment->InsertEndChild(pEmployments);
+
+			doc.SaveFile(file_path);
+			break;
+		//case 'e':
+
+			//break;
+	}
 
 	//finish it, becose doesnt work
 }
@@ -53,16 +78,15 @@ void XMLtree::PrintTree() const noexcept
 			auto pEmployments = pDepartaments->FirstChildElement("employments");
 			if (pEmployments != nullptr) {
 				auto pEmployment = pEmployments->FirstChildElement("employment");
-				if (pEmployment != nullptr) {
+				while (pEmployment) {
 					std::cout << "  \t" << " Surname: " << GetStrFromChild(pEmployment, "surname") << std::endl;
 					std::cout << "  \t" << " Name: " << GetStrFromChild(pEmployment, "name") << std::endl;
 					std::cout << "  \t" << " MiddleName: " << GetStrFromChild(pEmployment, "middleName") << std::endl;
 					std::cout << "  \t" << " Function: " << GetStrFromChild(pEmployment, "function") << std::endl;
 					std::cout << "  \t" << " Salary: " << GetStrFromChild(pEmployment, "salary") << std::endl;
-				} else {
-					std::cout << "Employment not recognized!" << std::endl;
-				}
-				std::cout << std::endl;
+					pEmployment = pEmployment->NextSiblingElement("employment");
+					std::cout << std::endl;
+				} 
 			} else {
 				std::cout << "Employments not recognized!" << std::endl;
 			}

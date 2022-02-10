@@ -7,7 +7,7 @@ class XMLtree
 {
 private:
 	XMLtree();
-	~XMLtree() = default;
+	~XMLtree();
 public:
 	XMLtree(const XMLtree&) = delete;
 	XMLtree(const XMLtree&&) = delete;
@@ -19,7 +19,7 @@ private:
 public:
 	bool Initialize(const char* _file_path);
 
-	void AddElement(const char* _name) noexcept;
+	void AddElement(const char ch) noexcept;
 
 	void ChangeElement() noexcept;
 
@@ -30,4 +30,5 @@ public:
 	static XMLtree& GetInstance() noexcept { static XMLtree obj;  return obj; };
 private:
 	XMLDocument doc;
+	const char* file_path;
 };
