@@ -21,9 +21,10 @@ std::string XMLtree::GetStrFromChild(const XMLElement* _elem, const char* _child
 	return str == NULL ? "element " + std::string(_child_name) + " not found!" : str;
 }
 
-bool XMLtree::Initialize(const char* _file_path)
+bool XMLtree::Initialize(const char* _file_path, std::vector<std::string> _basic_names)
 {
 	this->file_path = _file_path;
+	this->elem_names = std::move(_basic_names);
 	return doc.LoadFile(_file_path) != XML_SUCCESS ? false : true;
 }
 
@@ -79,11 +80,9 @@ void XMLtree::PrintTree() const noexcept
 			if (pEmployments != nullptr) {
 				auto pEmployment = pEmployments->FirstChildElement("employment");
 				while (pEmployment) {
-					std::cout << "  \t" << " Surname: " << GetStrFromChild(pEmployment, "surname") << std::endl;
-					std::cout << "  \t" << " Name: " << GetStrFromChild(pEmployment, "name") << std::endl;
-					std::cout << "  \t" << " MiddleName: " << GetStrFromChild(pEmployment, "middleName") << std::endl;
-					std::cout << "  \t" << " Function: " << GetStrFromChild(pEmployment, "function") << std::endl;
-					std::cout << "  \t" << " Salary: " << GetStrFromChild(pEmployment, "salary") << std::endl;
+					for (const auto& elems : elem_names) {
+						std::cout << "  \t" << elems << ": " << GetStrFromChild(pEmployment, elems.c_str()) << std::endl;
+					}
 					pEmployment = pEmployment->NextSiblingElement("employment");
 					std::cout << std::endl;
 				} 
