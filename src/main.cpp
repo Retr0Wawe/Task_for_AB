@@ -12,5 +12,7 @@ int main()
 		std::exit(0);
 	}
 
-	xml->PrintTree();
+	xml->AddElement('e');
+
+	//xml->PrintTree();
 }

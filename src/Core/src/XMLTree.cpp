@@ -2,16 +2,16 @@
 
 #include <iostream>
 
-XMLtree::XMLtree(): file_path(nullptr)
+XMLtree::XMLtree() : file_path(nullptr)
 {
-	#if defined(_WIN32) || defined(_WIN64)
-		system("chcp 65001 && cls"); 
-	#endif
+#if defined(_WIN32) || defined(_WIN64)
+	system("chcp 65001 && cls");
+#endif
 }
 
 XMLtree::~XMLtree()
 {
-	//doc.SaveFile(file_path);
+	doc.SaveFile(file_path);
 }
 
 std::string XMLtree::GetStrFromChild(const XMLElement* _elem, const char* _child_name) const
@@ -31,31 +31,54 @@ bool XMLtree::Initialize(const char* _file_path, std::vector<std::string> _basic
 void XMLtree::AddElement(const char ch) noexcept
 {
 	auto pTop = doc.RootElement();
-	
-	switch (ch) 
-	{
-		case 'd':
-			std::string str;
-			XMLElement * pNewDepartment = doc.NewElement("department");
+	std::string str;
 
-			std::cout << "Enter department name:";
+	if (ch == 'd') {
+		std::cout << "Enter department name: ";
+		std::getline(std::cin, str);
+
+		XMLElement* pDepartment = doc.NewElement("department");
+		pDepartment->SetAttribute("name", str.c_str());
+		pTop->InsertEndChild(pDepartment);
+
+		XMLNode* pEmployments = doc.NewElement("employments");
+		pDepartment->InsertEndChild(pEmployments);
+
+		XMLNode* pEmployment = doc.NewElement("employment");
+		pEmployments->InsertEndChild(pEmployment);
+
+		for (const auto& names : elem_names) {
+			XMLElement* pFirstElem = doc.NewElement(names.c_str());
+			str.clear();
+
+			std::cout << "Enter data for " << names << ": ";
 			std::getline(std::cin, str);
-			
-			pNewDepartment->SetAttribute("name", str.c_str());
-			pTop->InsertEndChild(pNewDepartment);
 
-			XMLNode* pEmployments = doc.NewElement("employments");
-
-			pNewDepartment->InsertEndChild(pEmployments);
-
-			doc.SaveFile(file_path);
-			break;
-		//case 'e':
-
-			//break;
+			pFirstElem->SetText(str.c_str());
+			pEmployment->InsertEndChild(pFirstElem);
+		}
 	}
+	/*
+	else if (ch == 'e') {
+		XMLElement* pElem = pTop->FirstChildElement("department");
+		std::cout << "Enter department name: ";
+		std::getline(std::cin, str);
 
-	//finish it, becose doesnt work
+		while (pElem) {
+			auto str_atr = pElem->Attribute("name");
+			std::cout << str_atr << std::endl;
+
+			pElem = pElem->NextSiblingElement();
+			
+			if (str == str_atr) {
+				std::cout << pElem->Attribute("name");
+				break;
+			}
+		}
+	}
+	*/
+
+	doc.SaveFile(file_path);
 }
 
 void XMLtree::ChangeElement() noexcept
@@ -85,13 +108,15 @@ void XMLtree::PrintTree() const noexcept
 					}
 					pEmployment = pEmployment->NextSiblingElement("employment");
 					std::cout << std::endl;
-				} 
-			} else {
+				}
+			}
+			else {
 				std::cout << "Employments not recognized!" << std::endl;
 			}
 			pDepartaments = pDepartaments->NextSiblingElement("department");
 		}
-	} else {
+	}
+	else {
 		std::cout << "File not recognized!" << std::endl;
 	}
 }
