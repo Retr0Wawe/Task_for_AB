@@ -58,7 +58,6 @@ void XMLtree::AddElement(const char ch) noexcept
 			pEmployment->InsertEndChild(pFirstElem);
 		}
 	}
-	/*
 	else if (ch == 'e') {
 		XMLElement* pElem = pTop->FirstChildElement("department");
 		std::cout << "Enter department name: ";
@@ -66,17 +65,14 @@ void XMLtree::AddElement(const char ch) noexcept
 
 		while (pElem) {
 			auto str_atr = pElem->Attribute("name");
-			std::cout << str_atr << std::endl;
 
-			pElem = pElem->NextSiblingElement();
-			
 			if (str == str_atr) {
 				std::cout << pElem->Attribute("name");
 				break;
 			}
+			pElem = pElem->NextSiblingElement();
 		}
 	}
-	*/
 
 	doc.SaveFile(file_path);
 }
